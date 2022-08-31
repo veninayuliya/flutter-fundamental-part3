@@ -1,6 +1,8 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_fundamental_3/widgets/forms.dart';
-import 'package:flutter_fundamental_3/widgets/image_widget.dart';
+// import 'package:flutter_fundamental_3/widgets/forms.dart';
+// import 'package:flutter_fundamental_3/widgets/image_widget.dart';
+import 'package:flutter_fundamental_3/widgets/input_fields.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,6 +34,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
+  final TextEditingController _controller = TextEditingController.fromValue(
+      const TextEditingValue(text: "isi angka saja"));
+
   void _incrementCounter() {
     setState(() {
       _counter++;
@@ -45,21 +50,32 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: GestureDetector(
-            onLongPress: _incrementCounter,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Text(
-                  'You have pushed the button this many times:',
+        child: Form(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const Text(
+                'You have pushed the button this many times:',
+              ),
+              Text(
+                '$_counter',
+                style: Theme.of(context).textTheme.headline4,
+              ),
+              VerificationCodeFormField(controller: _controller),
+              Builder(
+                builder: (BuildContext subContext) => ElevatedButton(
+                  onPressed: () {
+                    final valid = Form.of(subContext)?.validate();
+                    if (kDebugMode) {
+                      print("valid: $valid");
+                    }
+                  },
+                  child: const Text("validate"),
                 ),
-                Text(
-                  '$_counter',
-                  style: Theme.of(context).textTheme.headline4,
-                ),
-                const FormContoh(),
-              ],
-            )),
+              )
+            ],
+          ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
